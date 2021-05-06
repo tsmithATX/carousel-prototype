@@ -22,21 +22,14 @@ export default function useEventListener(
     // Create event listener that calls handler function stored in ref
     const eventListener = (event) => savedHandler.current(event);
 
-    if (element && active) {
+    if (element) {
       console.log("creating event listener", eventName, element);
       element.addEventListener(eventName, eventListener);
     }
-    if (element && !active) {
-      try {
-        console.log("deactivating event listener", eventName, element);
-        element.removeEventListener(eventName, eventListener);
-      } catch (err) {
-        // what do?
-      }
-    }
+
     return () => {
       console.log("removing event listener", eventName, element);
       if (element) element.removeEventListener(eventName, eventListener);
     };
-  }, [eventName, element, active]);
+  }, [eventName, element]);
 }

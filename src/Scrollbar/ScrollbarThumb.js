@@ -4,14 +4,14 @@ import useEventListener from "../hooks/useEventListener";
 import {
   ScrollbarTrack,
   ThumbDragWrapper,
-  StyledThumb
+  StyledThumb,
 } from "./ScrollbarThumbStyles";
 
 export const ScrollbarThumb = ({
   scrollHostRef,
   isMouseOver,
   numElements,
-  scrollbarContainerRef
+  scrollbarContainerRef,
 }) => {
   const [dragging, setDragging] = useState(false);
   const dragHandleRef = useRef();
@@ -20,7 +20,7 @@ export const ScrollbarThumb = ({
   const {
     leftTransform,
     scrollThumbWidth,
-    scrollThumbPercent
+    scrollThumbPercent,
   } = useScrollThumbSizings(scrollHostRef, numElements);
 
   const handleDragStart = useCallback(
@@ -52,14 +52,24 @@ export const ScrollbarThumb = ({
     [dragStartPosition, scrollHostRef, scrollThumbPercent, scrollElementStart]
   );
 
-  useEventListener("mousemove", handleMouseMove, window, dragging);
-  useEventListener("mouseup", handleDragStop, window, dragging);
+  useEventListener(
+    "mousemove",
+    handleMouseMove,
+    dragging ? window : null,
+    dragging
+  );
+  useEventListener(
+    "mouseup",
+    handleDragStop,
+    dragging ? window : null,
+    dragging
+  );
 
   return (
     <ThumbDragWrapper
       onMouseDown={handleDragStart}
       ref={dragHandleRef}
-      $width={scrollThumbWidth}
+      width={scrollThumbWidth}
       leftTransform={leftTransform}
     >
       <ScrollbarTrack $isMouseOver={isMouseOver} $dragging={dragging}>

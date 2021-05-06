@@ -10,12 +10,12 @@ const calculateThumbSize = (clientWidth, scrollWidth) => {
       100,
       Math.max(scrollThumbPercentage, SCROLL_BOX_MIN_WIDTH_PERCENT) * 100
     ),
-    scrollThumbPercentage
+    scrollThumbPercentage,
   };
 };
 
 const calculateLeftTransform = (scrollLeft, scrollWidth, offsetWidth) => {
-  return (parseInt(scrollLeft, 10) / parseInt(scrollWidth, 10)) * offsetWidth;
+  return (scrollLeft / scrollWidth) * offsetWidth;
 };
 
 export const useScrollThumbSizings = (scrollHostRef, numElements) => {
@@ -23,30 +23,37 @@ export const useScrollThumbSizings = (scrollHostRef, numElements) => {
   const [scrollThumbWidth, setScrollThumbWidth] = useState(0);
   const [scrollThumbPercent, setScrollThumbPercent] = useState(0);
 
-  const recalculateValues = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      const {
-        scrollLeft,
-        scrollWidth,
-        offsetWidth,
-        clientWidth
-      } = scrollHostRef.current;
-      const { thumbWidth, scrollThumbPercentage } = calculateThumbSize(
-        clientWidth,
-        scrollWidth
-      );
+  const recalculateThumbWidth = useCallback(() => {
+    const { scrollWidth, clientWidth } = scrollHostRef.current;
+    const { thumbWidth, scrollThumbPercentage } = calculateThumbSize(
+      clientWidth,
+      scrollWidth
+    );
+    setScrollThumbWidth(thumbWidth);
+    setScrollThumbPercent(scrollThumbPercentage);
+  }, [scrollHostRef, setScrollThumbWidth]);
 
-      setScrollThumbWidth(thumbWidth);
-      setScrollThumbPercent(scrollThumbPercentage);
+  const recalculateLeftPos = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const { scrollLeft, scrollWidth, offsetWidth } = scrollHostRef.current;
+
       setLeftTransform(
         calculateLeftTransform(scrollLeft, scrollWidth, offsetWidth)
       );
     });
   }, [scrollHostRef, setLeftTransform, setScrollThumbWidth]);
 
-  useEffect(() => recalculateValues(), [recalculateValues, numElements]);
-  useEventListener("scroll", recalculateValues, scrollHostRef.current);
-  useEventListener("resize", recalculateValues, window);
+  const recalculateThumbWidthAndPos = useCallback(() => {
+    recalculateThumbWidth();
+    recalculateLeftPos();
+  }, [recalculateThumbWidth, recalculateLeftPos]);
+
+  useEffect(() => {
+    recalculateThumbWidthAndPos();
+  }, [recalculateThumbWidthAndPos, numElements]);
+
+  useEventListener("scroll", recalculateLeftPos, scrollHostRef.current ?? null);
+  useEventListener("resize", recalculateThumbWidthAndPos, window);
 
   return { leftTransform, scrollThumbWidth, scrollThumbPercent };
 };

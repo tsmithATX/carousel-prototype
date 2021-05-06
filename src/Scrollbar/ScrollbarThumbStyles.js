@@ -9,14 +9,17 @@ export const ScrollbarTrack = styled.div`
   }};
 `;
 
-export const ThumbDragWrapper = styled.div`
-  width: ${({ $width }) => $width}%;
+export const ThumbDragWrapper = styled.div.attrs((props) => ({
+  style: {
+    width: `${props.width}%`,
+    transform: `translateX(${props.leftTransform}px)`,
+  },
+}))`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   background-color: blue;
-  transform: translateX(${({ leftTransform }) => leftTransform}px);
 `;
 
 export const StyledThumb = styled.div`

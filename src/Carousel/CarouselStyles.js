@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components/macro";
+import styled, { css } from "styled-components";
 
 export const hideScrollbarCss = css`
   ::-webkit-scrollbar {
@@ -33,15 +33,17 @@ export const CarouselContent = styled.div`
 export const CarouselItem = styled.div`
   background: #010101;
 `;
-const CarouselButton = styled.button`
+const CarouselButton = styled.div`
   position: absolute;
   top: 50%;
 `;
 
-export const StyledEndButton = styled(CarouselButton)`
+export const RightButtons = styled(CarouselButton)`
   right: 10px;
 `;
 
-export const StyledStartButton = styled(CarouselButton)`
+export const LeftButtons = styled(CarouselButton)`
   left: 10px;
 `;
+
+export const ScrollButton = styled.button``;
