@@ -6,7 +6,7 @@ const StyledItemCard = styled.div`
   flex-direction: column;
   border: 1px solid #414142;
   padding: 12px;
-  background-color: #008800;
+  background-color: #d2d2d2;
 `;
 
 const Title = styled.div`

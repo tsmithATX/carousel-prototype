@@ -19,7 +19,6 @@ export const ThumbDragWrapper = styled.div.attrs((props) => ({
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: blue;
 `;
 
 export const StyledThumb = styled.div`

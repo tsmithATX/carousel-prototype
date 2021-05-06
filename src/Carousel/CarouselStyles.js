@@ -11,7 +11,6 @@ export const hideScrollbarCss = css`
 export const CarouselContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #d7d7d8;
   position: relative;
 `;
 

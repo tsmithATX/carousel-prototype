@@ -4,7 +4,6 @@ import { ScrollbarThumb } from "./ScrollbarThumb";
 
 const ScrollbarContainer = styled.div`
   height: 48px;
-  background-color: rgba(220, 41, 30, 0.2);
   display: flex;
   width: 100%;
 `;
